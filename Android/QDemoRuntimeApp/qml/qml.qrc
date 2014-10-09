@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/qml">
         <file>main.qml</file>
+        <file>identifyview.qml</file>
     </qresource>
 </RCC>
-

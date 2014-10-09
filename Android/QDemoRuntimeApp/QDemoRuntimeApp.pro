@@ -40,7 +40,8 @@ RESOURCES += \
 OTHER_FILES += \
     wizard.xml \
     wizard.png \
-    main.qml
+    main.qml \
+    qml/identifyview.qml
 
 #-------------------------------------------------------------------------------
 
