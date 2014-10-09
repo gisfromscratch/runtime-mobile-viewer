@@ -1,8 +1,7 @@
 import QtQuick 2.1
+import QtQuick.Controls 1.2
 
-
-Rectangle {
-    id: rectange
-    width: 100
-    height: 62
+ToolButton {
+    id: magicButton
+    text: "Magic"
 }

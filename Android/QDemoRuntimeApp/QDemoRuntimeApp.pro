@@ -40,8 +40,9 @@ RESOURCES += \
 OTHER_FILES += \
     wizard.xml \
     wizard.png \
-    main.qml \
-    qml/identifyview.qml
+    qml/main.qml \
+    qml/identifyview.qml \
+    qml/tools/NavigationToolbar.qml
 
 #-------------------------------------------------------------------------------
 

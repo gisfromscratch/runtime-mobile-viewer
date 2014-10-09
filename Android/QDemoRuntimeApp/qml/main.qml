@@ -13,7 +13,10 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.1
 import ArcGIS.Runtime 10.3
+
+import "tools" as Tools
 
 ApplicationWindow {
     id: appWindow
@@ -21,22 +24,15 @@ ApplicationWindow {
     height: 600
     title: "Demo Runtime App"
 
-    ToolBar {
-        id: mainToolBar
-        width: parent.width
-
-        ToolButton {
-            iconSource: "qrc:/Resources/Map64.png"
-
-            onClicked: localTiledLayer.visible = !localTiledLayer.visible
-        }
+    Tools.NavigationToolbar {
+        id: mainToolbar
     }
 
     Map {
         id: focusMap
-        anchors.top: mainToolBar.bottom
+        anchors.top: mainToolbar.bottom
         width: parent.width
-        height: parent.height - mainToolBar.height
+        height: parent.height - mainToolbar.height
 
         wrapAroundEnabled: true
 

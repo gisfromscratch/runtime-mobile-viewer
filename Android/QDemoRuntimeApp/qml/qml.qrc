@@ -2,5 +2,6 @@
     <qresource prefix="/qml">
         <file>main.qml</file>
         <file>identifyview.qml</file>
+        <file>tools/NavigationToolbar.qml</file>
     </qresource>
 </RCC>
