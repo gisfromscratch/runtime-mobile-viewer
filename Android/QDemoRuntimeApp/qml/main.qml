@@ -32,7 +32,7 @@ ApplicationWindow {
         id: focusMap
         anchors.top: mainToolbar.bottom
         width: parent.width
-        height: parent.height - mainToolbar.height
+        height: parent.height - mainToolbar.height - mainStatusBar.height
 
         wrapAroundEnabled: true
 
@@ -40,6 +40,10 @@ ApplicationWindow {
             id: localTiledLayer
             path: "C:/Program Files (x86)/ArcGIS SDKs/Qt10.3/sdk/samples/data/tpks/Topographic.tpk"
         }
+    }
+
+    Tools.NavigationStatusBar {
+        id: mainStatusBar
     }
 }
 

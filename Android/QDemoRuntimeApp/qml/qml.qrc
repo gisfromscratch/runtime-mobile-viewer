@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>identifyview.qml</file>
         <file>tools/NavigationToolbar.qml</file>
+        <file>tools/NavigationStatusBar.qml</file>
     </qresource>
 </RCC>
