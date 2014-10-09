@@ -41,7 +41,6 @@ OTHER_FILES += \
     wizard.xml \
     wizard.png \
     qml/main.qml \
-    qml/identifyview.qml \
     qml/tools/NavigationToolbar.qml \
     qml/tools/NavigationStatusbar.qml
 

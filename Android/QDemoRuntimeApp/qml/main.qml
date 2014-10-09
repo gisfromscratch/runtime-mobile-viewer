@@ -17,6 +17,7 @@ import QtQuick.Layouts 1.1
 import ArcGIS.Runtime 10.3
 
 import "tools" as Tools
+import "views" as Views
 
 ApplicationWindow {
     id: appWindow
@@ -26,6 +27,10 @@ ApplicationWindow {
 
     Tools.NavigationToolbar {
         id: mainToolbar
+    }
+
+    Views.IdentifyResultView {
+        id: identifyResultView
     }
 
     Map {

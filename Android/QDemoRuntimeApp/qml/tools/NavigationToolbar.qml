@@ -8,15 +8,15 @@ ToolBar {
 
     RowLayout {
         ToolButton {
-            iconSource: "qrc:/Resources/Map64.png"
+            iconSource: "qrc:/Resources/Map32.png"
 
             onClicked: localTiledLayer.visible = !localTiledLayer.visible
         }
 
         ToolButton {
-            iconSource: "qrc:/Resources/Map64.png"
+            iconSource: "qrc:/Resources/IdentifyTool32.png"
 
-            onClicked: localTiledLayer.visible = !localTiledLayer.visible
+            onClicked: identifyResultView.visible = !identifyResultView.visible
         }
     }
 }
