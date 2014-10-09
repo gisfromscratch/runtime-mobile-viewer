@@ -45,6 +45,18 @@ ApplicationWindow {
             id: localTiledLayer
             path: "C:/Program Files (x86)/ArcGIS SDKs/Qt10.3/sdk/samples/data/tpks/Topographic.tpk"
         }
+
+        onMouseClicked: {
+            identifyTask.execute();
+        }
+
+        IdentifyTask {
+            id: identifyTask
+
+            onIdentifyTaskComplete: {
+                alert("");
+            }
+        }
     }
 
     Tools.NavigationStatusBar {
