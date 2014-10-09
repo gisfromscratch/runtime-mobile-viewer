@@ -16,6 +16,7 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.1
 import ArcGIS.Runtime 10.3
 
+import "js" as Scripts
 import "tools" as Tools
 import "views" as Views
 
@@ -47,15 +48,25 @@ ApplicationWindow {
         }
 
         onMouseClicked: {
-            identifyTask.execute();
+            identifyParameters.geometry = mouse.mapPoint;
+            identifyParameters.mapExtent = focusMap.extent;
+            identifyParameters.mapHeight = focusMap.height;
+            identifyParameters.tolerance = 5;
+            identifyParameters.DPI = 96;
+
+            identifyTask.execute(identifyParameters);
         }
 
         IdentifyTask {
             id: identifyTask
 
             onIdentifyTaskComplete: {
-                alert("");
+                identifyResultView.visible = true;
             }
+        }
+
+        IdentifyParameters {
+            id: identifyParameters
         }
     }
 

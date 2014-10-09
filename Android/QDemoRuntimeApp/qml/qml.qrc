@@ -4,5 +4,6 @@
         <file>tools/NavigationToolbar.qml</file>
         <file>tools/NavigationStatusBar.qml</file>
         <file>views/IdentifyResultView.qml</file>
+        <file>js/IdentifyHandler.js</file>
     </qresource>
 </RCC>
