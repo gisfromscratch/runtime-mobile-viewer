@@ -21,13 +21,27 @@ ApplicationWindow {
     height: 600
     title: "Demo Runtime App"
 
+    ToolBar {
+        id: mainToolBar
+        width: parent.width
+
+        ToolButton {
+            iconSource: "qrc:/Resources/Map64.png"
+
+            onClicked: localTiledLayer.visible = !localTiledLayer.visible
+        }
+    }
+
     Map {
-        anchors.fill: parent
+        id: focusMap
+        anchors.top: mainToolBar.bottom
+        width: parent.width
+        height: parent.height - mainToolBar.height
 
         wrapAroundEnabled: true
 
         ArcGISLocalTiledLayer {
-            //url: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"
+            id: localTiledLayer
             path: "C:/Program Files (x86)/ArcGIS SDKs/Qt10.3/sdk/samples/data/tpks/Topographic.tpk"
         }
     }

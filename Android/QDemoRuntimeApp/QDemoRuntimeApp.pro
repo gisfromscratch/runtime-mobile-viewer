@@ -39,7 +39,8 @@ RESOURCES += \
 
 OTHER_FILES += \
     wizard.xml \
-    wizard.png
+    wizard.png \
+    main.qml
 
 #-------------------------------------------------------------------------------
 
