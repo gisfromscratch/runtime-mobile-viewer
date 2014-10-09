@@ -1,6 +1,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.2
 import QtQuick.Window 2.0
+import ArcGIS.Runtime 10.3
 
 Window {
     width: 300
@@ -9,6 +10,14 @@ Window {
 
     ListModel {
         id: resultsModel
+    }
+
+    function updateResults(results) {
+        resultsModel.clear();
+
+        for (var index in results) {
+            var identifyResult = results[index];
+        }
     }
 
     TableView {

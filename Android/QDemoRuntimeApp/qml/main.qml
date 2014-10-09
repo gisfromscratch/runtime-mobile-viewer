@@ -52,7 +52,7 @@ ApplicationWindow {
             identifyParameters.mapExtent = focusMap.extent;
             identifyParameters.mapHeight = focusMap.height;
             identifyParameters.tolerance = 5;
-            identifyParameters.DPI = 96;
+            //identifyParameters.DPI = 96;
 
             identifyTask.execute(identifyParameters);
         }
@@ -61,6 +61,7 @@ ApplicationWindow {
             id: identifyTask
 
             onIdentifyTaskComplete: {
+                identifyResultView.updateResults(results);
                 identifyResultView.visible = true;
             }
         }
