@@ -20,7 +20,7 @@ ApplicationWindow {
     id: appWindow
     width: 600
     height: 800
-    title: "Exercise 2 Part 1"
+    title: "Exercise 2 Part 2"
 
     property bool isLandscape: appWindow.width > appWindow.height
     property int df: System.displayScaleFactor
@@ -67,6 +67,10 @@ ApplicationWindow {
             id: stopsLayer
         }
 
+        GraphicsLayer {
+            id: routesLayer
+        }
+
         onMouseClicked: {
             if (mouse.button === Qt.LeftButton) {
                 if (toolbar.state == "") {
@@ -91,6 +95,7 @@ ApplicationWindow {
                     var stopgraphic = stopGraphic.clone();
                     stopgraphic.geometry = mouse.mapPoint;
                     stopsLayer.addGraphic(stopgraphic);
+                    stops.addFeature(stopgraphic)
                 }
             }
         }
@@ -114,6 +119,7 @@ ApplicationWindow {
                     var stopGraphicClone = stopGraphic.clone();
                     stopGraphicClone.geometry = result.location;
                     var id = stopsLayer.addGraphic(stopGraphicClone);
+                    stops.addFeature(stopGraphicClone);
                     var extent = map.extent;
                     extent.centerAt(result.location);
                     map.zoomTo(extent);
@@ -154,6 +160,147 @@ ApplicationWindow {
     }
 
     /*-----------------------------------------------------------------------------------------------------------------------
+    Routing
+    ---------------------------------------------------------------------------------------------------------------------*/
+
+    LocalRouteTask {
+        id: routeTask
+        network: "Streets_ND"
+        database: dataPath + "/RuntimeSanDiego.geodatabase"
+
+        onSolveStatusChanged: {
+
+            if (solveStatus === LocalRouteTask.SolveComplete)
+            {
+                console.log("Route complete # " + solveResult.routes.length.toString());
+
+                routesLayer.removeAllGraphics();
+                textPanel.state = "popUpNav";
+                textPanelText.text = "";
+
+                for (var index = 0; index < solveResult.routes.length; index++) {
+                    var route = solveResult.routes[index];
+
+                    var graphic = route.route;
+                    graphic.symbol = routeSymbol;
+
+                    routesLayer.addGraphic(graphic);
+
+                    var t = "";
+                    var dirs = route.routingDirections;
+                    for (var dir = 0; dir < dirs.length; dir++) {
+                        t += dirs[dir].text + "\r\n";
+                    }
+
+
+                    textPanelText.text += t;
+                }
+
+            }
+
+            else if (solveStatus === LocalRouteTask.SolveError)
+            {
+                console.log("Route error: " + solveError.message);
+                console.log("data path: " + routeTask.database);
+            }
+        }
+    }
+
+    LocalRouteTaskParameters {
+        id: taskParameters
+        task: routeTask
+        returnDirections: true
+        outSpatialReference: map.spatialReference
+    }
+
+    NAFeaturesAsFeature {
+        id: stops
+        spatialReference: map.spatialReference
+    }
+
+    NAFeaturesAsFeature {
+        id: barriers
+        spatialReference: map.spatialReference
+    }
+
+    SimpleLineSymbol {
+        id: routeSymbol
+        width: 3
+        color: "#00b2ff"
+        style: Enums.SimpleLineSymbolStyleSolid
+    }
+
+    /*-----------------------------------------------------------------------------------------------------------------------
+      TextPanel
+      ---------------------------------------------------------------------------------------------------------------------*/
+
+    Rectangle {
+        id: textPanel
+        anchors {
+            top: toolbar.top
+            left: parent.left
+            right: parent.right
+        }
+        height: 0
+        width: isLandscape ? appWindow.width * 0.6 : appWindow.width
+        color: "white"
+        opacity: 0.6
+
+        states : [
+            State {
+                name: "popUpNav"
+                PropertyChanges { target: textPanel; height: 300 * df }
+                AnchorChanges { target: textPanel; anchors.top: undefined; anchors.bottom: toolbar.top}
+            }
+        ]
+    }
+    Rectangle {
+        color: "dark grey"
+        radius: 25
+        anchors {
+            margins: -5
+            fill: close
+        }
+        MouseArea {
+            anchors.fill: parent
+            anchors.margins: -50
+            onClicked: {
+                textPanel.state = "";
+            }
+        }
+    }
+
+    Image {
+        id: close
+        source:"qrc:/Resources/remove.png"
+        width: 20 * df
+        height: 20 * df
+        anchors {
+            top: textPanel.top
+            right: textPanel.right
+            margins: 10
+        }
+    }
+
+    Flickable {
+        id: textPanelFlickArea
+        anchors.fill: textPanel
+        anchors.margins: 30 * df
+        contentHeight: textPanelText.height
+        contentWidth: textPanel.width
+        boundsBehavior: Flickable.StopAtBounds
+        clip:true
+        flickableDirection: Flickable.VerticalFlick
+
+        Text {
+            id: textPanelText
+            anchors.fill: textPanelFlickArea
+            font.pointSize: 12
+            wrapMode: Text.WordWrap
+        }
+    }
+
+    /*-----------------------------------------------------------------------------------------------------------------------
       Toolbar
       ---------------------------------------------------------------------------------------------------------------------*/
 
@@ -171,7 +318,7 @@ ApplicationWindow {
         states: [
             State {
                 name: "position"
-                PropertyChanges { target: toolbarGPSButton; visible: false }
+                PropertyChanges { target: toolbarGPSButton; visible: false}
                 PropertyChanges { target: toolbarAnalysisButton; visible: false }
                 PropertyChanges { target: toolbarSearchButton;  visible: false }
                 PropertyChanges { target: myBackButton;  visible: true }
@@ -283,7 +430,10 @@ ApplicationWindow {
             anchors.fill: parent
             onClicked: {
                 toolbar.state = ""
+                textPanel.state = ""
                 stopsLayer.removeAllGraphics();
+                stops.clearFeatures();
+                routesLayer.removeAllGraphics();
             }
         }
     }
@@ -301,6 +451,13 @@ ApplicationWindow {
         MouseArea {
             id: myRouteButtonMouseArea
             anchors.fill: parent
+            onClicked: {
+                console.log("Stop graphics #=", stopsLayer.graphics.length);
+                taskParameters.stops = stops;
+                taskParameters.returnDirections = true;
+                console.log("route params: " + taskParameters.toText());
+                routeTask.solve(taskParameters);
+            }
         }
     }
 
@@ -450,9 +607,11 @@ ApplicationWindow {
                 map.extent = mapExtent;
                 map.mapRotation = 0;
                 stopsLayer.removeAllGraphics();
+                stops.clearFeatures();
+                routesLayer.removeAllGraphics();
+                textPanel.state = "";
             }
         }
     }
 }
-
 
