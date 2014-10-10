@@ -1,6 +1,18 @@
 <RCC>
     <qresource prefix="/Resources">
         <file>AppIcon.png</file>
+        <file>back.png</file>
+        <file>clipboard.png</file>
+        <file>coffee.png</file>
+        <file>coffeeBad.png</file>
+        <file>coffeeGood.png</file>
+        <file>gps.png</file>
+        <file>gpson.png</file>
+        <file>home.png</file>
+        <file>RedShinyPin.png</file>
+        <file>remove.png</file>
+        <file>route.png</file>
+        <file>search.png</file>
+        <file>searchDark.png</file>
     </qresource>
 </RCC>
-
