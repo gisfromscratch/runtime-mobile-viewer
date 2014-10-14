@@ -2,5 +2,7 @@
     <qresource prefix="/Resources">
         <file>AppIcon.png</file>
     </qresource>
+    <qresource prefix="/Resources/thumbnails">
+        <file>thumbnails/natgeo.jpg</file>
+    </qresource>
 </RCC>
-

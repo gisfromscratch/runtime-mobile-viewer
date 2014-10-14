@@ -27,7 +27,16 @@ ApplicationWindow {
         wrapAroundEnabled: true
 
         ArcGISTiledMapServiceLayer {
+            id: natGeoLayer;
             url: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"
+        }
+
+        BasemapGallery {
+            id: gallery;
+        }
+
+        onMapReady: {
+            gallery.addLayer(natGeoLayer);
         }
     }
 }
