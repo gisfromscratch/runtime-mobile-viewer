@@ -1,11 +1,14 @@
 import QtQuick 2.0
 
 Rectangle {
+    id: gallery
     width: parent.width
     height: 100
 
+    signal basemapChanged(string basemapUrl)
+
     ListView {
-        id: gallery
+        id: listView
         model: viewModel
         //delegate: layerView
 
@@ -26,6 +29,14 @@ Rectangle {
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
                 source: imageSource
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        gallery.basemapChanged(layerUrl);
+                    }
+                }
             }
         }
     }
@@ -39,15 +50,9 @@ Rectangle {
 
     ListModel {
         id: serviceModel
-
-        ListElement {
-            name: "Layer1";
-            imageSource: "qrc:/Resources/thumbnails/thumbnails/natgeo.jpg"
-        }
     }
 
-    function addLayer(imageServiceLayer) {
-        console.log(imageServiceLayer.url);
-        //serviceModel.append({ 'name': imageServiceLayer.name, 'source': "/Resources/thumbnails/thumbnails/natgeo.jpg" });
+    function addLayer(layerUrl, thumbnailUrl) {
+        serviceModel.append({ 'layerUrl': layerUrl, 'imageSource': thumbnailUrl });
     }
 }

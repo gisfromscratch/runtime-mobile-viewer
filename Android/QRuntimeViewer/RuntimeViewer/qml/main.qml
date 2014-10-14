@@ -22,21 +22,37 @@ ApplicationWindow {
     title: "RuntimeViewer"
 
     Map {
+        id: focusMap
         anchors.fill: parent
 
         wrapAroundEnabled: true
 
         ArcGISTiledMapServiceLayer {
-            id: natGeoLayer;
+            id: basemapLayer;
             url: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"
         }
 
         BasemapGallery {
             id: gallery;
+
+            property ArcGISTiledMapServiceLayer currentLayer
+
+            onBasemapChanged: {
+                if (focusMap.containsLayer(basemapLayer)) {
+                    focusMap.removeLayer(basemapLayer);
+                }
+                if (currentLayer && focusMap.containsLayer(currentLayer)) {
+                    focusMap.removeLayer(currentLayer);
+                }
+
+                currentLayer = ArcGISRuntime.createObject("ArcGISTiledMapServiceLayer", { 'url': basemapUrl });
+                focusMap.addLayer(currentLayer);
+            }
         }
 
         onMapReady: {
-            gallery.addLayer(natGeoLayer);
+            gallery.addLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", "qrc:/Resources/thumbnails/natgeo.jpg");
+            gallery.addLayer("http://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer", "qrc:/Resources/thumbnails/lightgrey.png")
         }
     }
 }

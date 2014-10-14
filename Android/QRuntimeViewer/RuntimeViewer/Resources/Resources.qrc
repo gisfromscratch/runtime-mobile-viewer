@@ -1,8 +1,7 @@
 <RCC>
     <qresource prefix="/Resources">
         <file>AppIcon.png</file>
-    </qresource>
-    <qresource prefix="/Resources/thumbnails">
+        <file>thumbnails/lightgrey.png</file>
         <file>thumbnails/natgeo.jpg</file>
     </qresource>
 </RCC>
