@@ -3,4 +3,5 @@ runtime-mobile-viewer
 
 Sample QML runtime viewer for mobile platforms
 
-* Contains the default functionality most GIS viewer have
+* Easy to use GIS viewer using ArcGIS Runtime for QT (QML API)
+* Contains a bunch of sample code
