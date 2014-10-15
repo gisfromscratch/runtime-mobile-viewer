@@ -26,7 +26,11 @@ Rectangle {
 
         Text {
             id: basemapText
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors {
+                top: parent.top
+                topMargin: 10
+                horizontalCenter: parent.horizontalCenter
+            }
             font {
                 family: "Helvetica"
                 pixelSize: 14
@@ -37,7 +41,11 @@ Rectangle {
 
         Image {
             id: basemapImage
-            anchors.fill: parent
+            anchors {
+                fill: parent
+                top: basemapText.bottom
+                topMargin: 10
+            }
             fillMode: Image.PreserveAspectFit
             source: "qrc:/Resources/toolbars/diamond_blue.png"
 
@@ -63,7 +71,12 @@ Rectangle {
         property bool hovered: false
 
         Text {
-            anchors.horizontalCenter: parent.horizontalCenter
+            id: layersText
+            anchors {
+                top: parent.top
+                topMargin: 10
+                horizontalCenter: parent.horizontalCenter
+            }
             font {
                 family: "Helvetica"
                 pixelSize: 14
@@ -74,8 +87,11 @@ Rectangle {
 
         Image {
             id: layersImage
-            anchors.fill: parent
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors {
+                fill: parent
+                top: layersText.bottom
+                topMargin: 10
+            }
             fillMode: Image.PreserveAspectFit
             source: "qrc:/Resources/toolbars/diamond_green.png"
         }
@@ -101,7 +117,12 @@ Rectangle {
         property bool hovered: false
 
         Text {
-            anchors.horizontalCenter: parent.horizontalCenter
+            id: searchText
+            anchors {
+                top: parent.top
+                topMargin: 10
+                horizontalCenter: parent.horizontalCenter
+            }
             font {
                 family: "Helvetica"
                 pixelSize: 14
@@ -112,8 +133,11 @@ Rectangle {
 
         Image {
             id: searchImage
-            anchors.fill: parent
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors {
+                fill: parent
+                top: searchText.bottom
+                topMargin: 10
+            }
             fillMode: Image.PreserveAspectFit
             source: "qrc:/Resources/toolbars/diamond_orange.png"
 
@@ -139,10 +163,15 @@ Rectangle {
         property bool hovered: false
 
         Text {
-            anchors.horizontalCenter: parent.horizontalCenter
+            id: documentsText
+            anchors {
+                top: parent.top
+                topMargin: 10
+                horizontalCenter: parent.horizontalCenter
+            }
             font {
                 family: "Helvetica"
-                pixelSize: 14
+                pixelSize:14
             }
             color: "white"
             text: qsTr("Documents")
@@ -150,8 +179,11 @@ Rectangle {
 
         Image {
             id: documentsImage
-            anchors.fill: parent
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors {
+                fill: parent
+                top: documentsText.bottom
+                topMargin: 10
+            }
             fillMode: Image.PreserveAspectFit
             source: "qrc:/Resources/toolbars/diamond_red.png"
 
@@ -177,7 +209,12 @@ Rectangle {
         property bool hovered: false
 
         Text {
-            anchors.horizontalCenter: parent.horizontalCenter
+            id: settingsText
+            anchors {
+                top: parent.top
+                topMargin: 10
+                horizontalCenter: parent.horizontalCenter
+            }
             font {
                 family: "Helvetica"
                 pixelSize: 14
@@ -188,8 +225,11 @@ Rectangle {
 
         Image {
             id: settingsImage
-            anchors.fill: parent
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors {
+                fill: parent
+                top: settingsText.bottom
+                topMargin: 10
+            }
             fillMode: Image.PreserveAspectFit
             source: "qrc:/Resources/toolbars/diamond_blue.png"
 
