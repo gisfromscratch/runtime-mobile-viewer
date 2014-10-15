@@ -30,34 +30,46 @@ Rectangle {
         id: listView
         model: viewModel
 
-        anchors.fill: parent
-        anchors.margins: {
-            left: 32
+        anchors {
+            fill: parent
+            top: galleryHeader.bottom
+            topMargin: 50
+            margins: {
+                left: 32
+            }
         }
 
-        orientation: ListView.Horizontal
+        orientation: ListView.HorizontalFlick
         spacing: 32
     }
 
     Component {
         id: layerView
-        Item {
+        Rectangle {
             id: item
             width: 100
             height: 100
 
+            property bool hovered: false
+
             Image {
                 id: image
-                anchors.fill: parent
+                anchors.fill: item
                 fillMode: Image.PreserveAspectFit
                 source: imageSource
 
                 MouseArea {
                     anchors.fill: parent
 
+                    hoverEnabled: true
+
                     onClicked: {
                         gallery.basemapChanged(layerUrl);
                         gallery.visible = false;
+                    }
+                    onHoveredChanged: {
+                        item.hovered = !item.hovered;
+                        item.color = (item.hovered) ? "#3e4551" : gallery.color;
                     }
                 }
             }
