@@ -9,12 +9,21 @@ Rectangle {
 
     property int displayFactor: System.displayScaleFactor
 
-    Item {
+    function handleHoverItem(item) {
+        item.hovered = !item.hovered;
+        item.color = (item.hovered) ? "#3e4551" : "#4f5764";
+    }
+
+    Rectangle {
         id: basemapItem
         width: parent.width
         anchors.top: parent.top
         anchors.topMargin: 35
         height: 100
+        color: parent.color
+
+        property bool hovered: false
+
         Text {
             id: basemapText
             anchors.horizontalCenter: parent.horizontalCenter
@@ -34,17 +43,25 @@ Rectangle {
 
             MouseArea {
                 anchors.fill: parent
+                hoverEnabled: true
                 onClicked: {
                     gallery.visible = true;
+                }
+                onHoveredChanged: {
+                    handleHoverItem(basemapItem);
                 }
             }
         }
     }
-    Item {
+    Rectangle {
         id: layersItem
         width: parent.width
         anchors.top: basemapItem.bottom
         height: 100
+        color: parent.color
+
+        property bool hovered: false
+
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             font {
@@ -62,12 +79,27 @@ Rectangle {
             fillMode: Image.PreserveAspectFit
             source: "qrc:/Resources/toolbars/diamond_green.png"
         }
+
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: {
+                // TODO:
+            }
+            onHoveredChanged: {
+                handleHoverItem(layersItem);
+            }
+        }
     }
-    Item {
+    Rectangle {
         id: searchItem
         width: parent.width
         anchors.top: layersItem.bottom
         height: 100
+        color: parent.color
+
+        property bool hovered: false
+
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             font {
@@ -84,13 +116,28 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             fillMode: Image.PreserveAspectFit
             source: "qrc:/Resources/toolbars/diamond_orange.png"
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: {
+                    // TODO:
+                }
+                onHoveredChanged: {
+                    handleHoverItem(searchItem);
+                }
+            }
         }
     }
-    Item {
+    Rectangle {
         id: documentsItem
         width: parent.width
         anchors.top: searchItem.bottom
         height: 100
+        color: parent.color
+
+        property bool hovered: false
+
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             font {
@@ -107,13 +154,28 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             fillMode: Image.PreserveAspectFit
             source: "qrc:/Resources/toolbars/diamond_red.png"
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: {
+                    // TODO:
+                }
+                onHoveredChanged: {
+                    handleHoverItem(documentsItem);
+                }
+            }
         }
     }
-    Item {
+    Rectangle {
         id: settingsItem
         width: parent.width
         anchors.top: documentsItem.bottom
         height: 100
+        color: parent.color
+
+        property bool hovered: false
+
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             font {
@@ -130,6 +192,17 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             fillMode: Image.PreserveAspectFit
             source: "qrc:/Resources/toolbars/diamond_blue.png"
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: {
+                    // TODO:
+                }
+                onHoveredChanged: {
+                    handleHoverItem(settingsItem);
+                }
+            }
         }
     }
 }

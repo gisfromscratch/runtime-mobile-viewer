@@ -8,6 +8,24 @@ Rectangle {
 
     signal basemapChanged(string basemapUrl)
 
+    Rectangle {
+        id: galleryHeader
+        color: "#272c33"
+        width: parent.width
+        height: 44
+
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            font {
+                family: "Helvetica"
+                pixelSize: 16
+            }
+            color: "#ffffff"
+            text: qsTr("Basemaps")
+        }
+    }
+
     ListView {
         id: listView
         model: viewModel
