@@ -4,7 +4,6 @@ Rectangle {
     id: gallery
     width: 320
     height: parent.height
-
     color: "#4f5764"
 
     signal basemapChanged(string basemapUrl)
@@ -12,19 +11,22 @@ Rectangle {
     ListView {
         id: listView
         model: viewModel
-        //delegate: layerView
 
         anchors.fill: parent
+        anchors.margins: {
+            left: 32
+        }
+
         orientation: ListView.Horizontal
-        spacing: 10
+        spacing: 32
     }
 
     Component {
         id: layerView
         Item {
             id: item
-            width: parent.height
-            height: parent.height
+            width: 100
+            height: 100
 
             Image {
                 id: image
@@ -37,8 +39,21 @@ Rectangle {
 
                     onClicked: {
                         gallery.basemapChanged(layerUrl);
+                        gallery.visible = false;
                     }
                 }
+            }
+
+            Text {
+                id: basemapText
+                anchors.top: image.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                font {
+                    family: "Helvetica"
+                    pixelSize: 12
+                }
+                color: "white"
+                text: layerName
             }
         }
     }
@@ -54,7 +69,7 @@ Rectangle {
         id: serviceModel
     }
 
-    function addLayer(layerUrl, thumbnailUrl) {
-        serviceModel.append({ 'layerUrl': layerUrl, 'imageSource': thumbnailUrl });
+    function addLayer(layerName, layerUrl, thumbnailUrl) {
+        serviceModel.append({ 'layerName': layerName, 'layerUrl': layerUrl, 'imageSource': thumbnailUrl });
     }
 }
