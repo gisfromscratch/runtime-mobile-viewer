@@ -3,5 +3,9 @@
         <file>AppIcon.png</file>
         <file>thumbnails/lightgrey.png</file>
         <file>thumbnails/natgeo.jpg</file>
+        <file>toolbars/diamond_blue.png</file>
+        <file>toolbars/diamond_green.png</file>
+        <file>toolbars/diamond_orange.png</file>
+        <file>toolbars/diamond_red.png</file>
     </qresource>
 </RCC>

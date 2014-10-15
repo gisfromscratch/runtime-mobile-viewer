@@ -34,6 +34,7 @@ ApplicationWindow {
 
         BasemapGallery {
             id: gallery;
+            visible: false
 
             property ArcGISTiledMapServiceLayer currentLayer
 
@@ -47,6 +48,14 @@ ApplicationWindow {
 
                 currentLayer = ArcGISRuntime.createObject("ArcGISTiledMapServiceLayer", { 'url': basemapUrl });
                 focusMap.addLayer(currentLayer);
+            }
+        }
+
+        NavigationBar {
+            id: navigationBar
+            anchors {
+                top: parent.top
+                left: parent.left
             }
         }
 

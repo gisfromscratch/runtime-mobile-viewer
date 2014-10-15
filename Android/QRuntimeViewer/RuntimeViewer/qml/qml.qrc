@@ -2,5 +2,6 @@
     <qresource prefix="/qml">
         <file>main.qml</file>
         <file>BasemapGallery.qml</file>
+        <file>NavigationBar.qml</file>
     </qresource>
 </RCC>

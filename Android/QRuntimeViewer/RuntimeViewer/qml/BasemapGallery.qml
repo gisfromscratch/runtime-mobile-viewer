@@ -2,8 +2,10 @@ import QtQuick 2.0
 
 Rectangle {
     id: gallery
-    width: parent.width
-    height: 100
+    width: 320
+    height: parent.height
+
+    color: "#4f5764"
 
     signal basemapChanged(string basemapUrl)
 
