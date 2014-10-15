@@ -26,9 +26,11 @@ Rectangle {
         }
     }
 
-    ListView {
-        id: listView
+    GridView {
+        id: gridView
         model: viewModel
+        cellWidth: 120
+        cellHeight: 120
 
         anchors {
             fill: parent
@@ -38,52 +40,53 @@ Rectangle {
                 left: 32
             }
         }
-
-        orientation: ListView.HorizontalFlick
-        spacing: 32
     }
 
     Component {
         id: layerView
         Rectangle {
             id: item
-            width: 100
-            height: 100
+            width: gridView.cellWidth
+            height: gridView.cellHeight
+            color: gallery.color
 
             property bool hovered: false
 
-            Image {
-                id: image
-                anchors.fill: item
-                fillMode: Image.PreserveAspectFit
-                source: imageSource
+            Column {
+                anchors.fill: parent
+                Image {
+                    id: image
+                    width: parent.width - 32
+                    height: parent.height - 32
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    fillMode: Image.PreserveAspectFit
+                    source: imageSource
 
-                MouseArea {
-                    anchors.fill: parent
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
 
-                    hoverEnabled: true
-
-                    onClicked: {
-                        gallery.basemapChanged(layerUrl);
-                        gallery.visible = false;
-                    }
-                    onHoveredChanged: {
-                        item.hovered = !item.hovered;
-                        item.color = (item.hovered) ? "#3e4551" : gallery.color;
+                        onClicked: {
+                            gallery.basemapChanged(layerUrl);
+                            gallery.visible = false;
+                        }
+                        onHoveredChanged: {
+                            item.hovered = !item.hovered;
+                            item.color = (item.hovered) ? "#3e4551" : gallery.color;
+                        }
                     }
                 }
-            }
 
-            Text {
-                id: basemapText
-                anchors.top: image.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                font {
-                    family: "Helvetica"
-                    pixelSize: 12
+                Text {
+                    id: basemapText
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font {
+                        family: "Helvetica"
+                        pixelSize: 12
+                    }
+                    color: "white"
+                    text: layerName
                 }
-                color: "white"
-                text: layerName
             }
         }
     }
