@@ -111,7 +111,6 @@ Rectangle {
         color: "#272c33"
         width: parent.width
         height: 44
-
         anchors.bottom: gallery.bottom
 
         Row {
