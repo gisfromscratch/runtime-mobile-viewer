@@ -27,36 +27,52 @@ Rectangle {
     ListView {
         anchors.top: layerViewHeader.bottom
         anchors.bottom: layerViewFooter.top
-        width: parent.width
-        height: layerViewHeader.bottom - layerViewFooter.top
+        width: layerView.width
+        height: layerViewHeader.top - layerViewFooter.bottom
+        orientation: ListView.Vertical
 
         delegate: layerItemView
 
         model: ListModel {
-            ListElement {
-                name: "---"
-            }
+            id: layerViewModel
         }
     }
 
     Component {
         id: layerItemView
         Item {
-            width: parent.width;
-            Column {
-                x: 5; y: 5
-                Text {
-                    font {
-                        family: "Helvetica"
-                        pixelSize: 16
+            width: layerView.width;
+
+            Row {
+                x: 32; y: 5
+                spacing: 10
+                Image {
+                    fillMode: Image.PreserveAspectFit
+                    source: visible ? "qrc:/Resources/dialog-ok-apply-2.png" : ""
+                }
+
+                Column {
+                    x: 32; y: 5
+                    Text {
+                        font {
+                            family: "Helvetica"
+                            pixelSize: 16
+                        }
+                        color: "white"
+                        text: layerName
                     }
-                    color: "white"
-                    text: '<b>Name:</b> ' + name
                 }
             }
         }
     }
 
+    function updateLayers(map) {
+        for (var layerIndex = 0; layerIndex < map.layerCount; layerIndex++) {
+            var layer = map.layer(layerIndex);
+            console.log(layer.name);
+            layerViewModel.append({ 'layerName': layer.name, 'visible': layer.visible });
+        }
+    }
 
     Rectangle {
         id: layerViewFooter
@@ -66,7 +82,8 @@ Rectangle {
         anchors.bottom: layerView.bottom
 
         Row {
-            spacing: 5
+            x: 32
+            spacing: 10
             Column {
                 Image {
                     height: layerViewFooter.height

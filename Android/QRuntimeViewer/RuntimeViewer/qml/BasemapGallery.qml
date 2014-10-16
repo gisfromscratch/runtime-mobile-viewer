@@ -114,7 +114,8 @@ Rectangle {
         anchors.bottom: gallery.bottom
 
         Row {
-            spacing: 5
+            x: 32
+            spacing: 10
             Column {
                 Image {
                     height: galleryFooter.height

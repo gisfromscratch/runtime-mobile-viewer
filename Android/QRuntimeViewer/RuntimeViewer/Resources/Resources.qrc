@@ -8,5 +8,6 @@
         <file>toolbars/diamond_orange.png</file>
         <file>toolbars/diamond_red.png</file>
         <file>toolbars/window-close.png</file>
+        <file>dialog-ok-apply-2.png</file>
     </qresource>
 </RCC>
