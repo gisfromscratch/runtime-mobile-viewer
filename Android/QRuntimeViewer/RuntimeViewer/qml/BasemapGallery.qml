@@ -119,7 +119,7 @@ Rectangle {
                 Image {
                     height: galleryFooter.height
                     fillMode: Image.PreserveAspectFit
-                    source: "qrc:/Resources/AppIcon.png"
+                    source: "qrc:/Resources/toolbars/window-close.png"
 
                     MouseArea {
                         anchors.fill: parent

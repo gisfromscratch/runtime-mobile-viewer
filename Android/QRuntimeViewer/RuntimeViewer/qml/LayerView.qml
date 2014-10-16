@@ -24,6 +24,40 @@ Rectangle {
         }
     }
 
+    ListView {
+        anchors.top: layerViewHeader.bottom
+        anchors.bottom: layerViewFooter.top
+        width: parent.width
+        height: layerViewHeader.bottom - layerViewFooter.top
+
+        delegate: layerItemView
+
+        model: ListModel {
+            ListElement {
+                name: "---"
+            }
+        }
+    }
+
+    Component {
+        id: layerItemView
+        Item {
+            width: parent.width;
+            Column {
+                x: 5; y: 5
+                Text {
+                    font {
+                        family: "Helvetica"
+                        pixelSize: 16
+                    }
+                    color: "white"
+                    text: '<b>Name:</b> ' + name
+                }
+            }
+        }
+    }
+
+
     Rectangle {
         id: layerViewFooter
         color: "#272c33"
@@ -37,7 +71,7 @@ Rectangle {
                 Image {
                     height: layerViewFooter.height
                     fillMode: Image.PreserveAspectFit
-                    source: "qrc:/Resources/AppIcon.png"
+                    source: "qrc:/Resources/toolbars/window-close.png"
 
                     MouseArea {
                         anchors.fill: parent

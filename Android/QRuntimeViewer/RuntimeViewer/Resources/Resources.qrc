@@ -7,5 +7,6 @@
         <file>toolbars/diamond_green.png</file>
         <file>toolbars/diamond_orange.png</file>
         <file>toolbars/diamond_red.png</file>
+        <file>toolbars/window-close.png</file>
     </qresource>
 </RCC>
