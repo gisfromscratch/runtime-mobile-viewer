@@ -114,7 +114,7 @@ Rectangle {
         anchors.bottom: gallery.bottom
 
         Row {
-            x: 32
+            anchors.horizontalCenter: parent.horizontalCenter
             spacing: 10
             Column {
                 Image {

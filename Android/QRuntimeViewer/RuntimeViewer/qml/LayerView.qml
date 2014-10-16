@@ -82,7 +82,7 @@ Rectangle {
         anchors.bottom: layerView.bottom
 
         Row {
-            x: 32
+            anchors.horizontalCenter: parent.horizontalCenter
             spacing: 10
             Column {
                 Image {
