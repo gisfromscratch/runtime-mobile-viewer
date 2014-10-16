@@ -63,6 +63,15 @@ ApplicationWindow {
             }
         }
 
+        LayerView {
+            id: layerView
+            anchors {
+                top: parent.top
+                left: parent.left
+            }
+            visible: false
+        }
+
         onMapReady: {
             gallery.addLayer("NatGeo", "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", "qrc:/Resources/thumbnails/natgeo.jpg");
             gallery.addLayer("Light Grey", "http://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer", "qrc:/Resources/thumbnails/lightgrey.png");

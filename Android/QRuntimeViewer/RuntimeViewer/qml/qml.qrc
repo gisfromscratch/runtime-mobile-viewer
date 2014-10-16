@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>BasemapGallery.qml</file>
         <file>NavigationBar.qml</file>
+        <file>LayerView.qml</file>
     </qresource>
 </RCC>

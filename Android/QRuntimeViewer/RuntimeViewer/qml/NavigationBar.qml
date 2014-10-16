@@ -100,7 +100,7 @@ Rectangle {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
-                // TODO:
+                layerView.visible = true;
             }
             onHoveredChanged: {
                 handleHoverItem(layersItem);

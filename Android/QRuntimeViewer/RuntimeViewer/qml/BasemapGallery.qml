@@ -105,4 +105,45 @@ Rectangle {
     function addLayer(layerName, layerUrl, thumbnailUrl) {
         serviceModel.append({ 'layerName': layerName, 'layerUrl': layerUrl, 'imageSource': thumbnailUrl });
     }
+
+    Rectangle {
+        id: galleryFooter
+        color: "#272c33"
+        width: parent.width
+        height: 44
+
+        anchors.bottom: gallery.bottom
+
+        Row {
+            spacing: 5
+            Column {
+                Image {
+                    height: galleryFooter.height
+                    fillMode: Image.PreserveAspectFit
+                    source: "qrc:/Resources/AppIcon.png"
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        onClicked: {
+                            gallery.visible = false;
+                        }
+                    }
+                }
+            }
+
+            Column {
+                Text {
+                    verticalAlignment: Text.AlignVCenter
+                    height: galleryFooter.height
+                    font {
+                        family: "Helvetica"
+                        pixelSize: 16
+                    }
+                    color: "#ffffff"
+                    text: qsTr("Close")
+                }
+            }
+        }
+    }
 }
