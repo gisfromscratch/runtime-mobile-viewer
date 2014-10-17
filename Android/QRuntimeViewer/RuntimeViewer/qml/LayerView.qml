@@ -46,38 +46,40 @@ Rectangle {
             height: 50
 
             Row {
-                x: 32; y: 5
+                x: 32; y: 32
                 spacing: 10
-                Image {
-                    id: checkImage
-                    fillMode: Image.PreserveAspectFit
-                    source: focusMap.layers[layerIndex].visible ? "qrc:/Resources/dialog-ok-apply-2.png" : "qrc:/Resources/dialog-ok-apply-empty-2.png"
+                Column {
+                    Image {
+                        id: checkImage
+                        fillMode: Image.PreserveAspectFit
+                        source: focusMap.layers[layerIndex].visible ? "qrc:/Resources/dialog-ok-apply-2.png" : "qrc:/Resources/dialog-ok-apply-empty-2.png"
 
-                    states: [
-                        State {
-                            name: "checked"
-                            PropertyChanges { target: checkImage; source: "qrc:/Resources/dialog-ok-apply-2.png" }
-                        },
-                        State {
-                            name: "unchecked"
-                            PropertyChanges { target: checkImage; source: "qrc:/Resources/dialog-ok-apply-empty-2.png" }
+                        states: [
+                            State {
+                                name: "checked"
+                                PropertyChanges { target: checkImage; source: "qrc:/Resources/dialog-ok-apply-2.png" }
+                            },
+                            State {
+                                name: "unchecked"
+                                PropertyChanges { target: checkImage; source: "qrc:/Resources/dialog-ok-apply-empty-2.png" }
+                            }
+                        ]
+
+                        MouseArea {
+                            anchors.fill: parent
+
+                            onClicked: {
+                                var featureLayer = focusMap.layers[layerIndex];
+                                featureLayer.visible = !featureLayer.visible;
+                                checkImage.state = (featureLayer.visible) ? "checked" : "unchecked";
+                            }
                         }
-                    ]
-
-                    MouseArea {
-                        anchors.fill: parent
-
-                        onClicked: {
-                            var featureLayer = focusMap.layers[layerIndex];
-                            featureLayer.visible = !featureLayer.visible;
-                            checkImage.state = (featureLayer.visible) ? "checked" : "unchecked";
-                        }
-                    }
-                }
+                }}
 
                 Column {
-                    x: 32; y: 5
+                    y: 5
                     Text {
+                        verticalAlignment: Text.AlignVCenter
                         font {
                             family: "Helvetica"
                             pixelSize: 16
