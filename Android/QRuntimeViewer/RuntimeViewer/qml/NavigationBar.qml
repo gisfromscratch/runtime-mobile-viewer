@@ -100,7 +100,7 @@ Rectangle {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
-                layerView.updateLayers(focusMap);
+                layerView.updateLayers(focusMap.featureLayers);
                 layerView.visible = true;
             }
             onHoveredChanged: {

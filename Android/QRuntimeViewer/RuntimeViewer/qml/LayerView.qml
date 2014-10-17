@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import ArcGIS.Runtime 10.3
 
 Rectangle {
     id: layerView
@@ -42,6 +43,7 @@ Rectangle {
         id: layerItemView
         Item {
             width: layerView.width;
+            height: 50
 
             Row {
                 x: 32; y: 5
@@ -66,10 +68,11 @@ Rectangle {
         }
     }
 
-    function updateLayers(map) {
-        for (var layerIndex = 0; layerIndex < map.layerCount; layerIndex++) {
-            var layer = map.layer(layerIndex);
-            console.log(layer.name);
+    function updateLayers(featureLayers) {
+        layerViewModel.clear();
+        for (var layerIndex in featureLayers) {
+            var layer = featureLayers[layerIndex];
+            //console.log(typeof(layer));
             layerViewModel.append({ 'layerName': layer.name, 'visible': layer.visible });
         }
     }

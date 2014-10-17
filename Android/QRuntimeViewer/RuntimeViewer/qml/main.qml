@@ -32,6 +32,8 @@ ApplicationWindow {
 
         wrapAroundEnabled: true
 
+        property var featureLayers : []
+
         ArcGISTiledMapServiceLayer {
             id: basemapLayer;
             url: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"
@@ -98,6 +100,7 @@ ApplicationWindow {
             localFeatureLayer.featureTable = localFeatureTable;
             console.log("Feature table bound");
             focusMap.addLayer(localFeatureLayer);
+            featureLayers.push(localFeatureLayer);
             console.log("Feature layer added");
         }
 
