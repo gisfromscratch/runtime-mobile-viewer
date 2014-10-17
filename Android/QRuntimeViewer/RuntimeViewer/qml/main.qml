@@ -28,7 +28,12 @@ ApplicationWindow {
 
     Map {
         id: focusMap
-        anchors.fill: parent
+        anchors {
+            top: parent.top
+            left: navigationBar.right
+            right: parent.right
+            bottom: parent.bottom
+        }
 
         wrapAroundEnabled: true
 
@@ -37,47 +42,6 @@ ApplicationWindow {
         ArcGISTiledMapServiceLayer {
             id: basemapLayer;
             url: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"
-        }
-
-        NavigationBar {
-            id: navigationBar
-            anchors {
-                top: parent.top
-                left: parent.left
-            }
-        }
-
-        BasemapGallery {
-            id: gallery;
-            anchors {
-                top: parent.top
-                left: parent.left
-            }
-            visible: false
-
-            property ArcGISTiledMapServiceLayer currentLayer
-
-            onBasemapChanged: {
-                if (focusMap.containsLayer(basemapLayer)) {
-                    focusMap.removeLayer(basemapLayer);
-                }
-                if (currentLayer && focusMap.containsLayer(currentLayer)) {
-                    focusMap.removeLayer(currentLayer);
-                }
-
-                // Set the current basemap
-                currentLayer = ArcGISRuntime.createObject("ArcGISTiledMapServiceLayer", { 'url': basemapUrl });
-                focusMap.insertLayer(currentLayer, 0);
-            }
-        }
-
-        LayerView {
-            id: layerView
-            anchors {
-                top: parent.top
-                left: parent.left
-            }
-            visible: false
         }
 
         function addLocalFeatureData(localConnection) {
@@ -123,6 +87,47 @@ ApplicationWindow {
             };
             addLocalFeatureData(localConnection);
         }
+    }
+
+    NavigationBar {
+        id: navigationBar
+        anchors {
+            top: parent.top
+            left: parent.left
+        }
+    }
+
+    BasemapGallery {
+        id: gallery;
+        anchors {
+            top: parent.top
+            left: parent.left
+        }
+        visible: false
+
+        property ArcGISTiledMapServiceLayer currentLayer
+
+        onBasemapChanged: {
+            if (focusMap.containsLayer(basemapLayer)) {
+                focusMap.removeLayer(basemapLayer);
+            }
+            if (currentLayer && focusMap.containsLayer(currentLayer)) {
+                focusMap.removeLayer(currentLayer);
+            }
+
+            // Set the current basemap
+            currentLayer = ArcGISRuntime.createObject("ArcGISTiledMapServiceLayer", { 'url': basemapUrl });
+            focusMap.insertLayer(currentLayer, 0);
+        }
+    }
+
+    LayerView {
+        id: layerView
+        anchors {
+            top: parent.top
+            left: parent.left
+        }
+        visible: false
     }
 }
 
