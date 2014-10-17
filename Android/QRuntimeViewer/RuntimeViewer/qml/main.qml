@@ -22,6 +22,10 @@ ApplicationWindow {
     height: 600
     title: "RuntimeViewer"
 
+    Geodatabase {
+        id: gdb
+    }
+
     Map {
         id: focusMap
         anchors.fill: parent
@@ -75,17 +79,20 @@ ApplicationWindow {
         }
 
         function addLocalFeatureData(localConnection) {
+            // Create the local geodatabase instance
             var localGeodatabase = ArcGISRuntime.createObject("Geodatabase");
             console.log("Setting the local geodatabase path: " + localConnection.path);
             localGeodatabase.path = localConnection.path;
 
-            var localFeatureTable = ArcGISRuntime.createObject("GeodatabaseFeatureTable");
-            localFeatureTable.geodatabaseFeatureTableValidChanged.connect(localFeatureTableValidationChanged);
+            // Validate the layer ID
+            var featureTables = localGeodatabase.geodatabaseFeatureTables;
+            if (featureTables.length < localConnection.layerId) {
+                console.log(localConnection.layerId + " is not a valid layer id!")
+                return;
+            }
 
-            localFeatureTable.geodatabase = localGeodatabase;
-            localFeatureTable.featureServiceLayerId = localConnection.layerId;
-            console.log("Local feature table valid: " + localFeatureTable.geodatabaseFeatureTableValid)
-
+            // Add the feature table as feature layer
+            var localFeatureTable = localGeodatabase.geodatabaseFeatureTableByLayerId(localConnection.layerId);
             var localFeatureLayer = ArcGISRuntime.createObject("FeatureLayer");
             console.log("Feature layer created");
             localFeatureLayer.featureTable = localFeatureTable;
@@ -106,6 +113,11 @@ ApplicationWindow {
             gallery.addLayer("Light Grey", "http://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer", "qrc:/Resources/thumbnails/lightgrey.png");
 
             var localConnection = {
+                path: System.userHomeFolder.filePath("data") + "/openstreetmap.geodatabase",
+                layerId: 1
+            };
+            addLocalFeatureData(localConnection);
+            localConnection = {
                 path: System.userHomeFolder.filePath("data") + "/openstreetmap.geodatabase",
                 layerId: 0
             };
