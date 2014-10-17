@@ -24,6 +24,64 @@ Rectangle {
         }
     }
 
+    Item {
+        id: searchViewInput
+        anchors {
+            top: searchViewHeader.bottom
+            bottom: searchViewFooter.top
+        }
+        width: parent.width
+        height: searchViewHeader.top - searchViewFooter.bottom
+
+        Row {
+            anchors {
+                top: parent.top
+                topMargin: 32
+                left: parent.left
+                leftMargin: 32
+            }
+            spacing: 10
+
+            Column {
+                Rectangle {
+                    width: 100
+                    height: 32
+                    color: searchView.color
+                    Text {
+                         anchors.centerIn: parent
+                        font {
+                            family: "Helvetica"
+                            pixelSize: 16
+                        }
+                        color: "#ffffff"
+                        text: qsTr("Search:")
+                    }
+                }
+            }
+
+            Column {
+                Rectangle {
+                    width: 150
+                    height: 32
+                    radius: 10
+                    color: "#ffffff"
+                    TextInput {
+                        anchors.centerIn: parent
+                        width: parent.width - 32
+                        wrapMode: Text.NoWrap
+                        clip: true
+                        font {
+                            family: "Helvetica"
+                            pixelSize: 16
+                        }
+                        color: searchView.color
+                        text: qsTr("...")
+                    }
+                }
+            }
+        }
+    }
+
     Rectangle {
         id: searchViewFooter
         color: "#272c33"
