@@ -146,7 +146,7 @@ Rectangle {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: {
-                    // TODO:
+                    searchView.visible = true;
                 }
                 onHoveredChanged: {
                     handleHoverItem(searchItem);

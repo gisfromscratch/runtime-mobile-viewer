@@ -126,5 +126,14 @@ ApplicationWindow {
         }
         visible: false
     }
+
+    SearchView {
+        id: searchView
+        anchors {
+            top: parent.top
+            left: parent.left
+        }
+        visible: false
+    }
 }
 

@@ -4,5 +4,6 @@
         <file>BasemapGallery.qml</file>
         <file>NavigationBar.qml</file>
         <file>LayerView.qml</file>
+        <file>SearchView.qml</file>
     </qresource>
 </RCC>
