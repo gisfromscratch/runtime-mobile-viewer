@@ -34,6 +34,7 @@ Rectangle {
         height: searchViewHeader.top - searchViewFooter.bottom
 
         Row {
+            id: searchInputRow
             anchors {
                 top: parent.top
                 topMargin: 32
@@ -66,6 +67,7 @@ Rectangle {
                     radius: 10
                     color: "#ffffff"
                     TextInput {
+                        id: searchInput
                         anchors.centerIn: parent
                         width: parent.width - 32
                         wrapMode: Text.NoWrap
@@ -76,6 +78,42 @@ Rectangle {
                         }
                         color: searchView.color
                         text: qsTr("...")
+                    }
+                }
+            }
+        }
+
+        Row {
+            layoutDirection: Qt.RightToLeft
+            anchors {
+                bottom: parent.bottom
+                bottomMargin: 32
+                left: parent.left
+                leftMargin: 32
+                right: parent.right
+                rightMargin: 32
+            }
+            Rectangle {
+                width: 150
+                height: 32
+                radius: 10
+                color: searchViewHeader.color
+
+                Text {
+                    anchors.centerIn: parent
+                    font {
+                        family: "Helvetica"
+                        pixelSize: 16
+                    }
+                    color: "#ffffff"
+                    text: qsTr("Search")
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        console.log("Searching... '" + searchInput.text + "'");
                     }
                 }
             }
