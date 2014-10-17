@@ -49,8 +49,30 @@ Rectangle {
                 x: 32; y: 5
                 spacing: 10
                 Image {
+                    id: checkImage
                     fillMode: Image.PreserveAspectFit
-                    source: visible ? "qrc:/Resources/dialog-ok-apply-2.png" : ""
+                    source: focusMap.layers[layerIndex].visible ? "qrc:/Resources/dialog-ok-apply-2.png" : "qrc:/Resources/dialog-ok-apply-empty-2.png"
+
+                    states: [
+                        State {
+                            name: "checked"
+                            PropertyChanges { target: checkImage; source: "qrc:/Resources/dialog-ok-apply-2.png" }
+                        },
+                        State {
+                            name: "unchecked"
+                            PropertyChanges { target: checkImage; source: "qrc:/Resources/dialog-ok-apply-empty-2.png" }
+                        }
+                    ]
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        onClicked: {
+                            var featureLayer = focusMap.layers[layerIndex];
+                            featureLayer.visible = !featureLayer.visible;
+                            checkImage.state = (featureLayer.visible) ? "checked" : "unchecked";
+                        }
+                    }
                 }
 
                 Column {
@@ -68,12 +90,13 @@ Rectangle {
         }
     }
 
-    function updateLayers(featureLayers) {
+    function updateLayers(focusMap) {
         layerViewModel.clear();
-        for (var layerIndex in featureLayers) {
-            var layer = featureLayers[layerIndex];
-            //console.log(typeof(layer));
-            layerViewModel.append({ 'layerName': layer.name, 'visible': layer.visible });
+        for (var layerIndex in focusMap.layers) {
+            var layer = focusMap.layers[layerIndex];
+            if ("FeatureLayer" === layer.objectType) {
+                layerViewModel.append({ 'layerName': layer.name, 'layerIndex': layerIndex });
+            }
         }
     }
 
