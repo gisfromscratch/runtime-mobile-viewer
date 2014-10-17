@@ -14,12 +14,33 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import ArcGIS.Runtime 10.3
+import ArcGIS.Extras 1.0
 
 ApplicationWindow {
     id: appWindow
     width: 800
     height: 600
     title: "RuntimeViewer"
+
+    // Local data
+    Geodatabase {
+        id: localGeodatabase
+        path: System.userHomeFolder.filePath("data") + "/openstreetmap.geodatabase"
+
+        onError: {
+            console.log(localGeodatabase.path + " is not valid!");
+        }
+    }
+
+//    GeodatabaseFeatureTable {
+//        id: localFeatureTable
+//        geodatabase: localGeodatabase.valid ? localGeodatabase : null
+//        featureServiceLayerId: 0
+
+//        onGeodatabaseFeatureTableValidChanged: {
+//            console.log("Local feature table is initialized.")
+//        }
+//    }
 
     Map {
         id: focusMap
@@ -58,8 +79,9 @@ ApplicationWindow {
                     focusMap.removeLayer(currentLayer);
                 }
 
+                // Set the current basemap
                 currentLayer = ArcGISRuntime.createObject("ArcGISTiledMapServiceLayer", { 'url': basemapUrl });
-                focusMap.addLayer(currentLayer);
+                focusMap.insertLayer(currentLayer, 0);
             }
         }
 
@@ -72,12 +94,29 @@ ApplicationWindow {
             visible: false
         }
 
+        function localFeatureTableValidationChanged() {
+            console.log("Local feature table validation changed.");
+        }
+
         onMapReady: {
             gallery.addLayer("NatGeo", "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", "qrc:/Resources/thumbnails/natgeo.jpg");
             gallery.addLayer("Light Grey", "http://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer", "qrc:/Resources/thumbnails/lightgrey.png");
             gallery.addLayer("NatGeo", "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", "qrc:/Resources/thumbnails/natgeo.jpg");
             gallery.addLayer("NatGeo", "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", "qrc:/Resources/thumbnails/natgeo.jpg");
             gallery.addLayer("Light Grey", "http://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer", "qrc:/Resources/thumbnails/lightgrey.png");
+
+            var localFeatureTable = ArcGISRuntime.createObject("GeodatabaseFeatureTable");
+            localFeatureTable.geodatabaseFeatureTableValidChanged.connect(localFeatureTableValidationChanged);
+
+            localFeatureTable.geodatabase = localGeodatabase;
+            localFeatureTable.featureServiceLayerId = 0;
+
+            var localFeatureLayer = ArcGISRuntime.createObject("FeatureLayer");
+            console.log("Feature layer created");
+            localFeatureLayer.featureTable = localFeatureTable;
+            console.log("Feature table bound");
+            focusMap.addLayer(localFeatureLayer);
+            console.log("Feature layer added");
         }
     }
 }
