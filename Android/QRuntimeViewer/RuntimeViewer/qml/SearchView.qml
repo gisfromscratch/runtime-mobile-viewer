@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import ArcGIS.Runtime 10.3
 
 Rectangle {
     id: searchView
@@ -21,6 +22,15 @@ Rectangle {
             }
             color: "#ffffff"
             text: qsTr("Search")
+        }
+    }
+
+    FindTask {
+        id: findTask
+        url: "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer"
+        onError: {
+            console.error("Find task failed!");
+            console.error(findTask.findError.message);
         }
     }
 
@@ -114,6 +124,7 @@ Rectangle {
 
                     onClicked: {
                         console.log("Searching... '" + searchInput.text + "'");
+                        var findParameters = ArcGISRuntime.createObject("FindParameters");
                     }
                 }
             }
