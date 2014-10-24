@@ -1,10 +1,13 @@
 import QtQuick 2.0
+import ArcGIS.Runtime 10.3
 
 Rectangle {
     id: searchView
     width: 320
     height: parent.height
     color: "#4f5764"
+
+    property var featureLayers : []
 
     Rectangle {
         id: searchViewHeader
@@ -21,6 +24,37 @@ Rectangle {
             }
             color: "#ffffff"
             text: qsTr("Search")
+        }
+    }
+
+//    FindTask {
+//        id: findTask
+//        url: "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer"
+//        onError: {
+//            console.error("Find task failed!");
+//            console.error(findTask.findError.message);
+//        }
+//    }
+
+    Query {
+        id: query
+        returnGeometry: true
+        where: "1=1"
+        outFields: "*"
+    }
+
+    function queryCompleted(featureResult) {
+
+    }
+
+    function updateLayers(focusMap) {
+        featureLayers = [];
+        for (var layerIndex in focusMap.layers) {
+            var layer = focusMap.layers[layerIndex];
+            if ("FeatureLayer" === layer.objectType) {
+                featureLayers.push(layer);
+//                layer.featureTable.queryFeaturesResultChange.connect(queryCompleted);
+            }
         }
     }
 
@@ -114,6 +148,12 @@ Rectangle {
 
                     onClicked: {
                         console.log("Searching... '" + searchInput.text + "'");
+                        for (var layerIndex in featureLayers) {
+                            var featureLayer = featureLayers[layerIndex];
+
+                            // TODO: How to handle feature query
+                            featureLayer.featureTable.queryFeatures(query);
+                        }
                     }
                 }
             }

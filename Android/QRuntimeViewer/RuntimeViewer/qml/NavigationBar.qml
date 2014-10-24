@@ -146,6 +146,7 @@ Rectangle {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: {
+                    searchView.updateLayers(focusMap);
                     searchView.visible = true;
                 }
                 onHoveredChanged: {
