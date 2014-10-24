@@ -1,4 +1,6 @@
 import QtQuick 2.0
+import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.2
 import ArcGIS.Runtime 10.3
 
 Rectangle {
@@ -45,50 +47,26 @@ Rectangle {
             width: layerView.width;
             height: 50
 
-            Row {
+            Column {
                 x: 32; y: 32
-                spacing: 10
-                Column {
-                    Image {
-                        id: checkImage
-                        fillMode: Image.PreserveAspectFit
-                        source: focusMap.layers[layerIndex].visible ? "qrc:/Resources/dialog-ok-apply-2.png" : "qrc:/Resources/dialog-ok-apply-empty-2.png"
+                CheckBox {
+                    id: checkBox
+                    checked: focusMap.layers[layerIndex].visible;
 
-                        states: [
-                            State {
-                                name: "checked"
-                                PropertyChanges { target: checkImage; source: "qrc:/Resources/dialog-ok-apply-2.png" }
-                            },
-                            State {
-                                name: "unchecked"
-                                PropertyChanges { target: checkImage; source: "qrc:/Resources/dialog-ok-apply-empty-2.png" }
+                    style: CheckBoxStyle {
+                        spacing: 10
+                        label: Text {
+                            font {
+                                family: "Helvetica"
+                                pixelSize: 16
                             }
-                        ]
-
-                        MouseArea {
-                            anchors.fill: parent
-
-                            onClicked: {
-                                var featureLayer = focusMap.layers[layerIndex];
-                                featureLayer.visible = !featureLayer.visible;
-                                checkImage.state = (featureLayer.visible) ? "checked" : "unchecked";
-                                if (featureLayer.visible) {
-                                    focusMap.zoomTo(featureLayer.fullExtent);
-                                }
-                            }
+                            color: "white"
+                            text: layerName
                         }
-                }}
+                    }
 
-                Column {
-                    y: 5
-                    Text {
-                        verticalAlignment: Text.AlignVCenter
-                        font {
-                            family: "Helvetica"
-                            pixelSize: 16
-                        }
-                        color: "white"
-                        text: layerName
+                    onCheckedChanged: {
+                        focusMap.layers[layerIndex].visible = checked;
                     }
                 }
             }

@@ -31,13 +31,15 @@ Rectangle {
             top: identifyViewHeader.bottom
             left: parent.left
             right: parent.right
+            margins: {
+                left: 8
+            }
         }
 
         height: 0.5 * parent.height
 
         highlight: Rectangle {
             color: "#3e4551"
-            radius: 10
         }
         focus: true
 
