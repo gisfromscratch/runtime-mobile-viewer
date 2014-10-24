@@ -22,10 +22,6 @@ ApplicationWindow {
     height: 600
     title: "RuntimeViewer"
 
-    Geodatabase {
-        id: gdb
-    }
-
     Map {
         id: focusMap
         anchors {
@@ -34,6 +30,8 @@ ApplicationWindow {
             right: parent.right
             bottom: parent.bottom
         }
+
+        property var localFeatureTables: []
 
         wrapAroundEnabled: true
 
@@ -48,21 +46,22 @@ ApplicationWindow {
             console.log("Setting the local geodatabase path: " + localConnection.path);
             localGeodatabase.path = localConnection.path;
 
-            // Validate the layer ID
+            // Load all feature tables
             var featureTables = localGeodatabase.geodatabaseFeatureTables;
-            if (featureTables.length < localConnection.layerId) {
-                console.log(localConnection.layerId + " is not a valid layer id!")
-                return;
-            }
+            for (var tableIndex in featureTables) {
+                var localFeatureTable = featureTables[tableIndex];
+                console.log("Feature table name: " + localFeatureTable.tableName);
 
-            // Add the feature table as feature layer
-            var localFeatureTable = localGeodatabase.geodatabaseFeatureTableByLayerId(localConnection.layerId);
-            var localFeatureLayer = ArcGISRuntime.createObject("FeatureLayer");
-            console.log("Feature layer created");
-            localFeatureLayer.featureTable = localFeatureTable;
-            console.log("Feature table bound");
-            focusMap.addLayer(localFeatureLayer);
-            console.log("Feature layer added");
+                // Add the feature table as feature layer
+                var localFeatureLayer = ArcGISRuntime.createObject("FeatureLayer");
+                console.log("Feature layer created");
+                localFeatureLayer.featureTable = localFeatureTable;
+                // Add a strong reference to it
+                localFeatureTables.push({ 'geodatabase': localGeodatabase, 'featureTable': localFeatureTable });
+                console.log("Feature table bound");
+                focusMap.insertLayer(localFeatureLayer, 1);
+                console.log("Feature layer added");
+            }
         }
 
         function localFeatureTableValidationChanged() {
@@ -76,14 +75,46 @@ ApplicationWindow {
 
             var localConnection = {
                 path: System.userHomeFolder.filePath("data") + "/openstreetmap.geodatabase",
-                layerId: 1
             };
             addLocalFeatureData(localConnection);
-            localConnection = {
-                path: System.userHomeFolder.filePath("data") + "/openstreetmap.geodatabase",
-                layerId: 0
-            };
-            addLocalFeatureData(localConnection);
+        }
+
+        onMouseClicked: {
+            var layerResult = [];
+            console.log("Identifying...");
+            for (var layerIndex in focusMap.layers) {
+                var layer = focusMap.layers[layerIndex];
+                if ("FeatureLayer" === layer.objectType) {
+                    console.log("Clear selection...");
+                    layer.clearSelection();
+
+                    if (layer.featureTable) {
+                        var pixelTolerance = 5;
+                        var maxRecords = 100;
+                        var ids = layer.findFeatures(mouse.x, mouse.y, pixelTolerance, maxRecords);
+                        if (ids && 0 < ids.length) {
+                            console.log("Selecting...");
+                            layer.selectFeatures(ids, false);
+                            var featureResult = [];
+                            var features = layer.featureTable.features(ids);
+                            for (var featureIndex in features) {
+                                var attributeResult = [];
+                                var feature = features[featureIndex];
+                                featureResult.push(feature.json);
+                            }
+                            layerResult.push({ 'layerName': layer.name, 'features': featureResult, "featuresCount": featureResult.length });
+                        }
+                    } else {
+                        console.error("Feature table of '" + layer.name + "' is not initialized!");
+                    }
+                }
+            }
+
+            if (0 < layerResult.length) {
+                identifyView.showResults(layerResult);
+                identifyView.visible = true;
+            }
+            console.log("Identifying done.");
         }
     }
 
@@ -130,6 +161,15 @@ ApplicationWindow {
 
     SearchView {
         id: searchView
+        anchors {
+            top: parent.top
+            left: parent.left
+        }
+        visible: false
+    }
+
+    IdentifyView {
+        id: identifyView
         anchors {
             top: parent.top
             left: parent.left

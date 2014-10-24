@@ -11,5 +11,7 @@
         <file>dialog-ok-apply-2.png</file>
         <file>dialog-ok-apply-empty-2.png</file>
         <file>thumbnails/imagery.png</file>
+        <file>tableview/header.png</file>
+        <file>tableview/selectedrow.png</file>
     </qresource>
 </RCC>

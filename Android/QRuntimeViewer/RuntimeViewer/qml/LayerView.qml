@@ -72,6 +72,9 @@ Rectangle {
                                 var featureLayer = focusMap.layers[layerIndex];
                                 featureLayer.visible = !featureLayer.visible;
                                 checkImage.state = (featureLayer.visible) ? "checked" : "unchecked";
+                                if (featureLayer.visible) {
+                                    focusMap.zoomTo(featureLayer.fullExtent);
+                                }
                             }
                         }
                 }}

@@ -5,5 +5,6 @@
         <file>NavigationBar.qml</file>
         <file>LayerView.qml</file>
         <file>SearchView.qml</file>
+        <file>IdentifyView.qml</file>
     </qresource>
 </RCC>
