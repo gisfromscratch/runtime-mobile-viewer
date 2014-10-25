@@ -176,5 +176,14 @@ ApplicationWindow {
         }
         visible: false
     }
+
+    SettingsView {
+        id: settingsView
+        anchors {
+            top: parent.top
+            left: parent.left
+        }
+        visible: false
+    }
 }
 

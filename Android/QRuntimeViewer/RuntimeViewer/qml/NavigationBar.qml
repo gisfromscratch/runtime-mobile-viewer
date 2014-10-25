@@ -239,7 +239,7 @@ Rectangle {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: {
-                    // TODO:
+                    settingsView.visible = true;
                 }
                 onHoveredChanged: {
                     handleHoverItem(settingsItem);
