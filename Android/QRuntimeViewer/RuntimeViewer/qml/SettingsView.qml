@@ -42,30 +42,50 @@ Rectangle {
             id: settingsViewModel
 
             ListElement {
-                settingsItemName: "Show Satellites"
+                settingsItemName: "Satellites"
             }
         }
     }
 
     WebSocket {
-        id: webSocket
+        id: satelliteSocket
         url: "ws://geoeventsample3.esri.com:8080/satelliteservice"
+
+        property GraphicsLayer layer: null
+        property SimpleMarkerSymbol defaultSymbol : SimpleMarkerSymbol {
+            style: "SimpleMarkerSymbolStyleCircle"
+            color: "#3e4551"
+            size: 5
+        }
+
         onTextMessageReceived: {
             var features = JSON.parse(message);
+            var targetSpatialReference = focusMap.spatialReference;
             for (var index in features) {
                 var feature = ArcGISRuntime.createObject("Graphic");
                 feature.json = features[index];
-                console.log(feature.geometry);
+                var geometry = feature.geometry;
+                if ("Point" === geometry.objectType) {
+                    // Currently only WGS84 supported
+                    feature.geometry = GeometryEngine.project(geometry.x, geometry.y, targetSpatialReference);
+                    feature.symbol = defaultSymbol;
+                    layer.addGraphic(feature);
+                }
             }
         }
-        onStatusChanged: if (webSocket.status == WebSocket.Error) {
-                             console.log("Error: " + webSocket.errorString);
-                         } else if (webSocket.status == WebSocket.Open) {
-                             //webSocket.sendTextMessage("Hello World");
-                             console.log("Socket opened");
-                         } else if (webSocket.status == WebSocket.Closed) {
-                             console.log("Socket closed");
-                         }
+        onStatusChanged: {
+            if (satelliteSocket.status == WebSocket.Error) {
+                console.log("Error: " + satelliteSocket.errorString);
+            } else if (satelliteSocket.status == WebSocket.Open) {
+                console.log("Socket opened");
+                layer = ArcGISRuntime.createObject("GraphicsLayer");
+                focusMap.addLayer(layer);
+            } else if (satelliteSocket.status == WebSocket.Closed) {
+                console.log("Socket closed");
+                focusMap.removeLayer(layer);
+                layer = null;
+            }
+        }
         active: false
     }
 
@@ -80,7 +100,7 @@ Rectangle {
                 x: 32; y: 32
                 CheckBox {
                     id: checkBox
-                    checked: webSocket.active
+                    checked: satelliteSocket.active
 
                     style: CheckBoxStyle {
                         spacing: 10
@@ -95,7 +115,7 @@ Rectangle {
                     }
 
                     onCheckedChanged: {
-                        webSocket.active = checkBox.checked;
+                        satelliteSocket.active = checkBox.checked;
                     }
                 }
             }
