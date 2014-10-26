@@ -52,11 +52,21 @@ Rectangle {
         url: "ws://geoeventsample3.esri.com:8080/satelliteservice"
 
         property GraphicsLayer layer: null
-        property SimpleMarkerSymbol defaultSymbol : SimpleMarkerSymbol {
+        property GraphicsLayer labelLayer: null
+        property SimpleMarkerSymbol defaultSymbol: SimpleMarkerSymbol {
             style: "SimpleMarkerSymbolStyleCircle"
             color: "#3e4551"
             size: 5
         }
+        property TextSymbol defaultLayerSymbol : TextSymbol {
+            fontFamily: "Helvetica"
+            size: 8
+            textColor: "#4f5764"
+            horizontalAlignment: "HorizontalAlignmentLeft"
+            xOffset: 5
+        }
+        property string displayFieldName: "SatelliteName"
+        property int graphicsCount: 0
 
         onTextMessageReceived: {
             var features = JSON.parse(message);
@@ -70,6 +80,15 @@ Rectangle {
                     feature.geometry = GeometryEngine.project(geometry.x, geometry.y, targetSpatialReference);
                     feature.symbol = defaultSymbol;
                     layer.addGraphic(feature);
+
+                    // Add the label
+                    var label = ArcGISRuntime.createObject("Graphic");
+                    label.geometry = feature.geometry;
+                    label.symbol = defaultLayerSymbol;
+                    label.symbol.text = feature.attributes[displayFieldName];
+                    labelLayer.addGraphic(label);
+
+                    graphicsCount++;
                 }
             }
         }
@@ -79,11 +98,18 @@ Rectangle {
             } else if (satelliteSocket.status == WebSocket.Open) {
                 console.log("Socket opened");
                 layer = ArcGISRuntime.createObject("GraphicsLayer");
+                labelLayer = ArcGISRuntime.createObject("GraphicsLayer");
                 focusMap.addLayer(layer);
+                focusMap.addLayer(labelLayer);
             } else if (satelliteSocket.status == WebSocket.Closed) {
                 console.log("Socket closed");
                 focusMap.removeLayer(layer);
+                focusMap.removeLayer(labelLayer);
                 layer = null;
+                labelLayer = null;
+
+                console.log(graphicsCount + " satellites displayed");
+                graphicsCount = 0;
             }
         }
         active: false
