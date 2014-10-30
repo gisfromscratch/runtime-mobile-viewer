@@ -22,6 +22,7 @@ ApplicationWindow {
     title: "MilitaryViewer"
 
     Map {
+        id: focusMap
         anchors.fill: parent
 
         wrapAroundEnabled: true
@@ -30,13 +31,24 @@ ApplicationWindow {
             url: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"
         }
 
+        GraphicsLayer {
+            id: graphicsLayer
+        }
+
+        onMouseClicked: {
+            var graphic = ArcGISRuntime.createObject("Graphic");
+            graphic.geometry = mouse.mapPoint;
+            graphic.symbol = multiLayerSymbol;
+            graphicsLayer.addGraphic(graphic);
+        }
+
         MessageGroupLayer {
             id: messageGroupLayer
+        }
 
-            MessageProcessor {
-                id: processor
-                dictionaryType: "SymbolDictionaryTypeMil2525C"
-            }
+        MultiLayerSymbol {
+            id: multiLayerSymbol
+            json: {"type":"CIMSymbolReference","symbol":{"type":"CIMLineSymbol","symbolLayers":[{"type":"CIMFilledStroke","enable":true,"effects":[{"type":"CIMGeometricEffectArrow","geometricEffectArrowType":"Block","primitiveName":null,"width":35}],"capStyle":"Round","pattern":{"type":"CIMSolidPattern","color":[0,0,0,255]},"width":2,"lineStyle3D":"Strip","alignment":"Center","joinStyle":"Miter","miterLimit":10,"patternFollowsStroke":true}]},"symbolName":null}
         }
 
         onMapReady: {
