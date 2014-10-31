@@ -16,11 +16,26 @@ import QtQuick.Controls 1.0
 import ArcGIS.Runtime 10.3
 import ArcGIS.Extras 1.0
 
+import "Mapping.js" as Mapping
+
 ApplicationWindow {
     id: appWindow
     width: 800
     height: 600
     title: "Runtime Content Viewer"
+
+    // All local feature tables strong referenced
+    property var localFeatureTables: []
+
+    onVisibilityChanged: {
+        if (appWindow.visible) {
+            runtimeContentViewModel.clear();
+
+            runtimeContentViewModel.append({ role: "Map", contentPath: System.userHomeFolder.filePath("data/openstreetmap.geodatabase")});
+            runtimeContentViewModel.append({ role: "Map", contentPath: System.userHomeFolder.filePath("data/CafeFS.geodatabase")});
+            runtimeContentViewModel.append({ role: "Map", contentPath: System.userHomeFolder.filePath("data/RuntimeSanDiego.geodatabase")});
+        }
+    }
 
     GridView {
         id: runtimeContentGridView
@@ -34,15 +49,6 @@ ApplicationWindow {
         model: VisualDataModel {
             model: ListModel {
                 id: runtimeContentViewModel
-
-                ListElement { role: "Map" }
-                ListElement { role: "Map" }
-                ListElement { role: "Map" }
-                ListElement { role: "Map" }
-                ListElement { role: "Map" }
-                ListElement { role: "Map" }
-                ListElement { role: "Map" }
-                ListElement { role: "Map" }
             }
 
             delegate: Component {
@@ -52,15 +58,17 @@ ApplicationWindow {
                     height: runtimeContentGridView.cellHeight - runtimeContentGridView.spacing
 
                     property Geodatabase geodatabase: Geodatabase {
-                        path: System.userHomeFolder.filePath("data/openstreetmap.geodatabase")
+                        path: contentPath
                     }
 
                     FeatureLayer {
-                        featureTable: geodatabase.geodatabaseFeatureTables[0]
+                        featureTable: (geodatabase.valid) ? geodatabase.geodatabaseFeatureTables[0] : null
                     }
 
                     onMouseClicked: {
+                        mapView.showRuntimeContent({ path: geodatabase.path });
                         mapView.visible = true;
+                        runtimeContentGridView.visible = false;
                     }
                 }
             }

@@ -4,10 +4,19 @@ import QtGraphicalEffects 1.0
 import ArcGIS.Runtime 10.3
 import ArcGIS.Extras 1.0
 
-Item{
-    property Geodatabase geodatabase: Geodatabase {
-        path: System.userHomeFolder.filePath("data/openstreetmap.geodatabase")
+import "Mapping.js" as Mapping
+
+Item {
+
+    // All local feature tables strong referenced
+    property var localFeatureTables: []
+
+    function showRuntimeContent(localConnection) {
+        focusMap.removeAll();
+        focusMap.reset();
+        Mapping.addLocalFeatureData(focusMap, localFeatureTables, localConnection);
     }
+
     Column {
         Rectangle {
             id: header
@@ -45,6 +54,7 @@ Item{
 
                     onClicked: {
                         mapView.visible = false;
+                        runtimeContentGridView.visible = true;
                     }
                 }
             }
@@ -67,10 +77,6 @@ Item{
             id: focusMap
             width: appWindow.width
             height: appWindow.height - header.height
-
-            FeatureLayer {
-                featureTable: geodatabase.geodatabaseFeatureTables[0]
-            }
         }
     }
 }

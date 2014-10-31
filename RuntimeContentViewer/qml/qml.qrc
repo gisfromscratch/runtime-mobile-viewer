@@ -2,5 +2,6 @@
     <qresource prefix="/qml">
         <file>main.qml</file>
         <file>MapView.qml</file>
+        <file>Mapping.js</file>
     </qresource>
 </RCC>
